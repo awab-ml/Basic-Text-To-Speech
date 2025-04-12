@@ -1,0 +1,578 @@
+/* style.css - Complete Code for Enhanced Text-to-Speech App */
+
+/* --- Variables and Base --- */
+:root {
+    --color-background: #1a1d2e; /* Deep blue/purple */
+    --color-surface: #2a2d40;  /* Slightly lighter surface */
+    --color-primary: #a855f7;   /* Vibrant purple accent */
+    --color-primary-dark: #9333ea;
+    --color-secondary: #5a5d70; /* For secondary buttons */
+    --color-secondary-hover: #707388;
+    --color-text-primary: #f0f0f5;
+    --color-text-secondary: #a0a0b5;
+    --color-border: #4a4d60;
+    --color-error: #f87171;
+    --color-success: #4ade80; /* Optional for success states */
+    --color-disabled: #404355; /* Darker disabled bg */
+    --color-disabled-text: #707388;
+
+    --font-primary: 'Poppins', sans-serif;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --border-radius: 8px;
+    --transition-speed: 0.2s;
+    --transition-bounce: cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy transition */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px; /* Base font size */
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+    line-height: 1.6;
+}
+
+/* --- Layout --- */
+.app-container {
+    background-color: var(--color-surface);
+    padding: 2rem 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 700px; /* Slightly wider */
+    transition: all var(--transition-speed) ease; /* Smooth resizing */
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1rem;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+}
+
+.core-interface {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Space between sections */
+}
+
+/* --- Input Area --- */
+.input-area {
+    position: relative; /* For character counter positioning */
+}
+
+textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-background); /* Slightly darker input bg */
+    color: var(--color-text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    line-height: 1.5;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3); /* Focus ring */
+}
+
+/* Custom Scrollbar */
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+textarea::-webkit-scrollbar-track {
+    background: var(--color-surface);
+    border-radius: 4px;
+}
+textarea::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 4px;
+    border: 2px solid var(--color-surface); /* Creates padding around thumb */
+}
+textarea::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.char-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    background-color: rgba(42, 45, 64, 0.8); /* Semi-transparent bg */
+    padding: 2px 6px;
+    border-radius: 4px;
+    pointer-events: none; /* So it doesn't block textarea interaction */
+}
+
+/* --- Quick Phrases --- */
+.quick-phrases {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem; /* Add space below phrases */
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+}
+
+.phrase-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    background-color: var(--color-surface);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 15px; /* Pill shape */
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    flex-shrink: 0; /* Prevent shrinking too much */
+}
+
+.phrase-button:hover {
+    background-color: var(--color-border);
+    color: var(--color-text-primary);
+    border-color: var(--color-secondary);
+    transform: translateY(-1px);
+}
+
+/* --- Controls --- */
+.controls-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Default mobile */
+    gap: 1.5rem 1.2rem; /* Row and column gap */
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+}
+
+.control-group {
+    min-width: 0; /* Prevent grid blowout */
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 0.6rem; /* Slightly more space */
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap; /* Prevent label text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.control-group label span { /* Style for value display */
+    color: var(--color-text-primary);
+    font-weight: 400;
+    background-color: var(--color-background);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    font-size: 0.85em;
+    margin-left: 0.3em;
+    display: inline-block; /* Ensure padding is applied correctly */
+    vertical-align: middle;
+}
+
+/* Select Styling */
+.select-wrapper {
+    position: relative;
+}
+
+select {
+    width: 100%;
+    padding: 0.8rem 2.5rem 0.8rem 1rem; /* Space for arrow */
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    appearance: none; /* Remove default */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);
+}
+
+select:disabled {
+    background-color: var(--color-disabled);
+    color: var(--color-disabled-text);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+/* Custom Select Arrow */
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--color-text-secondary);
+    transform: translateY(-50%);
+    pointer-events: none; /* Prevents interfering with select */
+    transition: border-color var(--transition-speed) ease;
+}
+
+.select-wrapper:hover::after {
+     border-top-color: var(--color-primary);
+}
+
+/* Range Slider Styling */
+.range-wrapper {
+    padding-top: 0.5rem; /* Add space for thumb */
+}
+
+input[type="range"] {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 100%;
+    height: 6px; /* Track height */
+    background: var(--color-border);
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+    transition: background var(--transition-speed) ease;
+    vertical-align: middle;
+}
+input[type="range"]:hover {
+     background: var(--color-secondary-hover);
+}
+
+/* Range Thumb */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid var(--color-surface); /* Creates a border effect */
+    transition: background var(--transition-speed) ease, transform var(--transition-speed) ease;
+    margin-top: -6px; /* Center thumb vertically */
+}
+input[type="range"]::-moz-range-thumb { /* Firefox */
+    width: 14px; /* Adjust size if needed for FF*/
+    height: 14px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid var(--color-surface);
+    transition: background var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+input[type="range"]:active::-webkit-slider-thumb {
+    background: var(--color-primary-dark);
+    transform: scale(1.1);
+}
+input[type="range"]:active::-moz-range-thumb {
+    background: var(--color-primary-dark);
+    transform: scale(1.1);
+}
+
+input[type="range"]:focus {
+     outline: none; /* Remove default focus outline */
+}
+
+input[type="range"]:focus::-webkit-slider-thumb { /* Focus style for thumb */
+     box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.4);
+}
+input[type="range"]:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.4);
+}
+
+input[type="range"]:disabled {
+     cursor: not-allowed;
+     opacity: 0.6;
+}
+input[type="range"]:disabled::-webkit-slider-thumb {
+     background: var(--color-disabled-text);
+     cursor: not-allowed;
+}
+input[type="range"]:disabled::-moz-range-thumb {
+     background: var(--color-disabled-text);
+     cursor: not-allowed;
+}
+
+
+/* Randomize Button Container */
+.random-button-container {
+    display: flex;
+    align-items: flex-end; /* Align button to bottom */
+    justify-content: flex-start;
+    height: 100%; /* Ensure it takes full height of grid cell */
+}
+
+/* --- Action Buttons --- */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem; /* More space above */
+}
+
+button { /* Base button style */
+    flex-grow: 1;
+    display: inline-flex; /* Align icon and text */
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem; /* Slightly more gap */
+    padding: 0.9rem 1.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-speed) ease,
+                transform var(--transition-speed) var(--transition-bounce), /* Bouncy */
+                box-shadow var(--transition-speed) ease;
+    box-shadow: var(--shadow-sm);
+    position: relative; /* For icon absolute positioning if needed */
+    overflow: hidden; /* Hide overflow during animations */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+button svg {
+     flex-shrink: 0; /* Prevent icon shrinking */
+     width: 18px;
+     height: 18px;
+     vertical-align: middle; /* Better alignment */
+}
+
+/* Primary Speak Button */
+#speakButton {
+    background-color: var(--color-primary);
+    color: white;
+}
+#speakButton:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px) scale(1.02); /* Enhanced hover */
+}
+#speakButton:active:not(:disabled) {
+    transform: translateY(-1px) scale(0.98); /* Press down effect */
+    box-shadow: none;
+}
+
+/* Speaking Animation */
+#speakButton .icon-wrapper {
+    position: relative;
+    display: inline-flex; /* Keep icons aligned */
+    align-items: center;
+    justify-content: center;
+    width: 18px; /* Match icon size */
+    height: 18px;
+}
+#speakButton .speak-icon {
+    transition: opacity 0.3s ease;
+    position: absolute;
+}
+#speakButton .speaking-indicator {
+    position: absolute;
+    top: 0; left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+#speakButton.is-speaking .speak-icon {
+    opacity: 0;
+}
+#speakButton.is-speaking .speaking-indicator {
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.7); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.7); opacity: 0.6; }
+}
+#speakButton.is-speaking .speaking-indicator circle { /* Target circles within the indicator */
+     transform-origin: center;
+}
+#speakButton.is-speaking .speaking-indicator .pulse-1 {
+    animation: pulse 2s infinite ease-in-out;
+}
+#speakButton.is-speaking .speaking-indicator .pulse-2 {
+     animation: pulse 2s 0.5s infinite ease-in-out; /* Delayed second pulse */
+}
+
+/* Secondary Button Style */
+.secondary-button {
+     background-color: var(--color-secondary);
+     color: var(--color-text-primary);
+}
+.secondary-button:hover:not(:disabled) {
+     background-color: var(--color-secondary-hover);
+     box-shadow: var(--shadow-md);
+     transform: translateY(-2px);
+}
+.secondary-button:active:not(:disabled) {
+     transform: translateY(0px);
+     box-shadow: var(--shadow-sm);
+}
+.secondary-button svg { /* Adjust icon color for secondary */
+    fill: var(--color-text-primary);
+}
+
+
+/* Disabled State for all Buttons */
+button:disabled {
+    background-color: var(--color-disabled);
+    color: var(--color-disabled-text);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none !important; /* Override hover/active transforms */
+    opacity: 0.7;
+}
+button:disabled svg {
+    fill: var(--color-disabled-text); /* Dim icon when disabled */
+}
+
+
+/* --- Status Display --- */
+.status-display {
+    min-height: 1.5em; /* Reserve space */
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    transition: color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+    border-radius: 4px;
+}
+
+.status-display.error {
+    color: var(--color-error);
+    font-weight: 500;
+    background-color: rgba(248, 113, 113, 0.1); /* Light red background */
+}
+
+.status-display.loading {
+    color: var(--color-primary);
+    font-style: italic;
+}
+
+.status-display.loading::before {
+    content: ''; /* Use CSS animation instead of emoji */
+    display: inline-block;
+    width: 0.8em;
+    height: 0.8em;
+    margin-right: 0.4em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    vertical-align: -0.1em;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+/* --- Accessibility --- */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* --- Responsive Design --- */
+@media (min-width: 700px) { /* Adjusted breakpoint */
+    .app-container {
+        padding: 2.5rem 3rem;
+    }
+     .controls-grid {
+        /* Adjust grid columns for more controls */
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        align-items: end; /* Align items to bottom */
+    }
+     .random-button-container {
+         justify-content: center; /* Center randomize button in its cell */
+         padding-bottom: 0.1rem; /* Align with other button bottoms */
+     }
+     .random-button-container button {
+        width: auto; /* Don't force full width */
+        flex-grow: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+     }
+
+    h1 { font-size: 2.25rem; }
+    .subtitle { font-size: 1.1rem; }
+    textarea { min-height: 200px; }
+    .action-buttons { gap: 1.5rem; }
+    button { /* Larger buttons on desktop */
+       /* font-size: 1.05rem; Keep font size consistent for now */
+       /* padding: 0.9rem 1.8rem; Keep padding consistent for now */
+    }
+}
+
+@media (max-width: 450px) {
+    body {
+        padding: 1rem; /* Less padding on very small screens */
+    }
+    .app-container {
+        padding: 1.5rem;
+    }
+    h1 { font-size: 1.8rem; }
+    .subtitle { font-size: 0.9rem; }
+    textarea { min-height: 150px; }
+    .action-buttons { flex-direction: column; } /* Stack action buttons */
+    button {
+        font-size: 0.95rem;
+        padding: 0.8rem 1rem;
+    }
+    .quick-phrases {
+         gap: 0.4rem;
+    }
+    .phrase-button {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+    }
+}
